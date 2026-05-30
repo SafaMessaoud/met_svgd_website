@@ -13,7 +13,7 @@ Besides an introduction to SVGD, variational inference, and related topics, we a
 
 ## Reference
 
-Safa Messaoud, Skander Charni, Elaa Bouazza, Ali Pourghasemi Fatideh, Halima Bensmail. [*Particles Don't Care About Z: Towards Scaling Entropy Estimation of Unnormalized Densities*](https://openreview.net/pdf?id=CaqVssw7rN). ICML 2026.
+1. Messaoud, S., Charni, S., Bouazza, E., Pourghasemi Fatideh, A., & Bensmail, H. (2026). [Particles don't care about Z: Towards scaling entropy estimation of unnormalized densities](https://openreview.net/pdf?id=CaqVssw7rN). *ICML*.
 
 ## Code
 
