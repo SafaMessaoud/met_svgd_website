@@ -39,7 +39,7 @@ The resulting stochasticity provides a significant robustness advantage. Rather 
 
 :::{figure} figures/figure_2a_maze_one_path.png
 :label: rl-agent-train
-Environment at train time.
+Environment at train time (No obstacles).
 :::
 
 :::{figure} figures/figure_2b_maze-two-paths.png
@@ -47,6 +47,7 @@ Environment at train time.
 Environment at test time.
 :::
 
+A robot navigating a maze.
 https://bair.berkeley.edu/blog/2017/10/06/soft-q-learning/.
 ::::
 
