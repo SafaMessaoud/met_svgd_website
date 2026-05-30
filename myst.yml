@@ -1,0 +1,46 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 109d07e6-85ff-4d40-9472-3284a0a5e40a
+  title: MET-SVGD
+  description: Website for MET-SVGD
+  keywords:
+    - Variational Inference
+    - Stein Variational Gradient Descent
+    - SVGD
+  github: https://github.com/SafaMessaoud/Variational-Inference-with-SVGD-
+  toc:
+    - file: 0-index.md
+    - file: 1-introduction.md
+    - file: 2-svgd.md
+    - file: 3-density.md
+    - file: 4-optimizations.md
+    - file: 5-results.md
+    - file: 6-library.md
+site:
+  actions:
+  nav:
+    - title: Introduction
+      url: /introduction
+    - title: SVGD
+      url: /svgd
+    - title: Density
+      url: /density
+    - title: Optimizations
+      url: /optimizations
+    - title: Results
+      url: /results
+    - title: Library
+      url: /library
+  template: book-theme
+  options:
+    style: styles.css
+    hide_myst_branding: true
+    hide_toc: true
+    hide_footer_links: true
+    hide_outline: false
+    hide_title_block: false
+    hide_search: true
+    logo_text: Metropolis-Hastings SVGD
+    # favicon: favicon.ico
+    # logo: site_logo.png
