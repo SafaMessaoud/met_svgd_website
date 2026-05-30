@@ -99,7 +99,7 @@ MET-SVGD bridges the gap between P-VI, SVGD, and MCMC methods.
 :label: bridge-table
 :align: center
 :class: flex flex-col items-center justify-center
-:header: "", "P-VI", "MCMC", "SVGD", "P-SVGD", "MET-SVGD"
+:header: "", "P‑VI", "MCMC", "SVGD", "P‑SVGD", "MET‑SVGD"
 "Expressivity", "✗", "✓", "✓", "✓", "✓✓"
 "Convergence Detection", "✓", "✗", "✓", "✓", "✓"
 "Convergence Guarantees", "✗", "✓", "✗", "✗", "✓"
