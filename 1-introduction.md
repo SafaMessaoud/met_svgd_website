@@ -81,12 +81,20 @@ Ideally, we seek a method that constructs an approximation $q$ that:
 
 ## MET-SVGD
 
-Metropolis-Hastings Stein Variational Gradient Descent (MET-SVGD) satisfies the above criteria by extending Parameterized SVGD (P-SVGD) [@s2ac], a particle-based parametric variational inference method based on SVGD [@svgd] that derives a closed-form expression of the SVGD-induced density.
+Metropolis-Hastings Stein Variational Gradient Descent (MET-SVGD) addresses the above challenges by deriving a tractable density representation for Stein Variational Gradient Descent (SVGD) [@svgd]. This enables direct entropy estimation while retaining SVGD's ability to draw samples from complex target distributions.
 
-MET-SVGD bridges the gap between Stein Variational Gradient Descent (SVGD) [@svgd], parametric variational inference (P-VI), and Metropolis-Hastings (MH), inheriting the strengths of each:
-- the ability to approximate arbitrarily complex distributions, convergence detection, and particle efficiency form SVGD
-- scalability from P-VI
-- convergence guarantees from MH
+More broadly, MET-SVGD unifies three major paradigms for approximate inference: Stein Variational Gradient Descent (SVGD), parametric variational inference (P-VI), and Metropolis-Hastings (MH). As a result, it inherits key advantages from each:
+
+* SVGD: expressive nonparametric approximation, efficient particle usage, and principled convergence diagnostics;
+* P-VI: scalability through parameterized samplers and efficient amortized inference;
+* MH: asymptotic correctness and convergence guarantees.
+
+A key contribution of MET-SVGD is that it enables SVGD to scale to high-dimensional distributions while preserving computational efficiency and multimodal expressivity.
+
+Furthermore, MET-SVGD replaces expensive hyperparameter search with end-to-end optimization of sampler parameters through KL-divergence minimization, enabling automatic adaptation of the inference procedure to the target distribution.
+
+Finally, MET-SVGD can be interpreted as a full-rank normalizing flow whose layers are induced by successive SVGD updates. Unlike conventional flows with a fixed depth, the number of transformations is determined adaptively through a convergence criterion, yielding a flexible and highly expressive density model.
+
 
 :::{figure} figures/bridge.png
 :label: bridge-image
@@ -108,8 +116,3 @@ MET-SVGD bridges the gap between P-VI, SVGD, and MCMC methods.
 "Parameter Efficiency", "✓", "—", "—", "✓✓", "✓✓"
 ```
 
-In addition, MET-SVGD unprecedentedly scales SVGD to high-dimensional spaces, while retaining computational efficiency.
-
-Moreover, unlike traditional approaches that rely on grid search for hyperparameter tuning, MET-SVGD enables end-to-end learning of sampler parameters via KL-divergence minimization, solving a long-standing challenge in machine learning.
-
-Finally, MET-SVGD can be viewed as a full-rank Jacobian normalizing flow model with an adaptive number of layers controlled by a convergence check, ensuring flexibility and expressivity.
