@@ -70,13 +70,13 @@ intractable. While $Z$ can be computed analytically for simple distributions suc
 Existing approaches fall into two broad categories:
 
 - **Sampling-based methods** (e.g., HMC, Langevin dynamics, SVGD) directly leverage the unnormalized density $\bar{p}$ through its score function to generate samples from the target distribution. These samples can subsequently be used to estimate $Z$ and related quantities, for example via importance sampling. However, such estimators often suffer from high variance in high dimensions and may require substantial computation to obtain high-quality samples.
-- **Variational inference methods** approximate $p$ with a tractable distribution $q$, enabling efficient sampling and density evaluation. This includes expressive families such as normalizing flows. While these methods provide direct access to densities and quantities such as entropy, they can be difficult to optimize and often struggle to faithfully capture complex multimodal targets.
+- **Variational inference methods** approximate $p$ with a tractable distribution $q$, enabling efficient sampling and density evaluation. This includes expressive families such as normalizing flows, which are however notoriously hard to optimize with gradient descent methods.
 
 Ideally, we seek a method that constructs an approximation $q$ that:
 - accurately captures complex, multimodal target distributions,
 - directly leverages the unnormalized density $\bar{p}$,
 - enables efficient sampling,
-- supports accurate entropy estimation,
+- supports accurate entropy estimation and
 - remains computationally tractable and scalable.
 
 ## MET-SVGD

@@ -52,6 +52,10 @@
   text-align: center;
 }
 
+#bridge-table th {
+  white-space: nowrap;
+}
+
 #bridge-table> :first-child {
   order: 2;
 }
