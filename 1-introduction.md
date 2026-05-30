@@ -8,7 +8,7 @@ We consider a target density known only up to normalization
 :enumerated: false
 p(x) = \frac{\bar{p}(x)}{Z},
 :::
-where $Z$ is intractable. Our objective is to approximate $p$ and estimate functionals of $p$, particularly its entropy.
+where $Z$ is intractable. Our objective is to approximate $p$ and estimate functionals of $p$, particularly its entropy $\mathcal{H}(p)$.
 
 ## Problem Significance
 
@@ -60,21 +60,24 @@ yet $\pi$ is only available through an unnormalized density.
 
 ## The Challenge
 
-The core difficulty lies in the fact that the normalization constant $Z$ is unknown, which renders many standard inference methods inapplicable.
-While $Z$ can be computed in closed form for certain distributions, such as Gaussians, this is generally not feasible for more complex distributions.
+The primary challenge is that the normalization constant $Z$ is unknown, making direct evaluation of
+:::{math}
+:enumerated: false
+p(x) = \frac{\bar{p}(x)}{Z}
+:::
+intractable. While $Z$ can be computed analytically for simple distributions such as Gaussians, it is generally unavailable for the complex, high-dimensional distributions encountered in modern machine learning.
 
-Some methods attempt to approximate $Z$, for example via importance sampling, but the variance of these estimates tends to grow with dimensionality, limiting their practicality.
+Existing approaches fall into two broad categories:
 
-Traditional MCMC methods (e.g., HMC, Langevin dynamics) bypass the normalization constant entirely by using the score function $\nabla_x \log p(x) = \nabla_x \log \bar{p}(x)$. However, these methods require careful hyperparameter tuning, produce only samples, and often need many iterations to yield high-quality results.
+- **Sampling-based methods** (e.g., HMC, Langevin dynamics, SVGD) directly leverage the unnormalized density $\bar{p}$ through its score function to generate samples from the target distribution. These samples can subsequently be used to estimate $Z$ and related quantities, for example via importance sampling. However, such estimators often suffer from high variance in high dimensions and may require substantial computation to obtain high-quality samples.
+- **Variational inference methods** approximate $p$ with a tractable distribution $q$, enabling efficient sampling and density evaluation. This includes expressive families such as normalizing flows. While these methods provide direct access to densities and quantities such as entropy, they can be difficult to optimize and often struggle to faithfully capture complex multimodal targets.
 
-Normalizing flows, by contrast, provide both samples and densities, which allows direct estimation of $p(x)$ for a generated sample $x$, and hence also of $\mathcal{H}(p)$.
-Yet, they do not directly leverage the unnormalized density $\bar{p}$, which limits their expressivity, and are prone to issues such as mode collapse.
-
-What we ultimately seek is a method that constructs a distribution that:
-- is expressive enough to capture complex, multimodal targets
-- utilizes the unnormalized density $\bar{p}$
-- is computationally tractable
-- allows efficient sampling
+Ideally, we seek a method that constructs an approximation $q$ that:
+- accurately captures complex, multimodal target distributions,
+- directly leverages the unnormalized density $\bar{p}$,
+- enables efficient sampling,
+- supports accurate entropy estimation,
+- remains computationally tractable and scalable.
 
 ## MET-SVGD
 
