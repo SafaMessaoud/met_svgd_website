@@ -46,9 +46,7 @@ Environment at train time (No obstacles).
 :label: rl-agent-test
 Environment at test time.
 :::
-
-A robot navigating a maze.
-https://bair.berkeley.edu/blog/2017/10/06/soft-q-learning/.
+A robot navigating a maze. Ref: https://bair.berkeley.edu/blog/2017/10/06/soft-q-learning/.
 ::::
 
 The figure below illustrates this effect. A deterministic policy is likely to fail because it has committed to a single behavior. In contrast, a maximum-entropy policy can adapt by exploiting an alternative route that was already represented in its action distribution.
