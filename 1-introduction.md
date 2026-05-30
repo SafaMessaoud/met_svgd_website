@@ -3,7 +3,7 @@
 
 ## Problem Setup
 
-We consider a target density known only up to normalization,
+We consider a target density known only up to normalization
 :::{math}
 :enumerated: false
 p(x) = \frac{\bar{p}(x)}{Z},
@@ -24,12 +24,12 @@ J_{\mathrm{MaxEnt}}(\pi) = \mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^{T}\big(r(
 :::
 where $\mathcal{H}(\pi(\cdot\mid s))$ denotes the policy entropy and $\alpha$ controls the reward-entropy trade-off.
 
-Without the entropy term, the optimal solution is **a deterministic policy** that selects a single highest-value action in each state. In contrast, maximizing the entropy-regularized objective yields a **stochastic policy** that assigns probability mass to multiple high-value actions. In fact, the optimal MaxEnt policy takes the form
+Without the entropy term, the optimal solution is **a deterministic policy** that selects a single highest-return action in each state. In contrast, maximizing the entropy-regularized objective yields a **stochastic policy** that assigns probability mass to multiple high-return actions. In fact, the optimal MaxEnt policy takes the form
 :::{math}
 :enumerated: false
 \pi(a\mid s) = \frac{\exp(Q(s,a)/\alpha)}{Z},
 :::
-which is an energy-based distribution with an intractable normalization constant.
+which is an energy-based distribution over the Q-values with an intractable normalization constant.
 
 The resulting stochasticity provides a significant robustness advantage. Rather than committing to a single trajectory, the agent learns a distribution over multiple high-reward behaviors. Consequently, if the environment changes at test time, the policy can exploit alternative strategies that were also assigned non-negligible probability during training.
 
@@ -56,7 +56,7 @@ This robustness comes at a cost: evaluating the MaxEnt objective requires estima
 :enumerated: false
 \mathcal{H}(\pi) = -\mathbb{E}_{a \sim \pi}[\log \pi(a)],
 :::
-yet $\pi$ is only available through an unnormalized density. Consequently, accurate and scalable entropy estimation for unnormalized distributions is a fundamental challenge in MaxEnt RL and many other machine learning applications.
+yet $\pi$ is only available through an unnormalized density. 
 
 ## The Challenge
 
