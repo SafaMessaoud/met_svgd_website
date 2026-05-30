@@ -1,30 +1,37 @@
 (sec1)=
 # MET-SVGD in a Nutshell
 
-## Motivation and Problem Setup
+## Problem Setup
 
-We consider the setting where we only have access to a target density $p$ known up to a normalization constant
+We consider a target density known only up to normalization,
 :::{math}
 :enumerated: false
 p(x) = \frac{\bar{p}(x)}{Z},
 :::
-where $\bar{p}$ is the unnormalized density and $Z$ is the normalization constant, which is generally intractable to compute.
-
-Our aim is to perform a range of inference tasks with respect to $p$, such as:
-- generating high-quality samples
-- estimating $p(x)$ for a given sample $x$
-- estimating the entropy of $p$
-
-To accomplish these goals, in practice, we typically rely on a parameterized sampling mechanism, such as a learned sampler, a neural transformation, or a parameterized particle update rule.
-The quality of inference hinges on how well this mechanism can represent the target density.
+where $Z$ is intractable. Our objective is to approximate $p$ and estimate functionals of $p$, particularly its entropy.
 
 ## Problem Significance
 
-This setup arises frequently in machine learning.
-A motivating example is maximum-entropy reinforcement learning (MaxEnt RL), where policies are defined through unnormalized energy-based distributions over actions.
+Target distributions known only up to a normalization constant arise throughout machine learning. A prominent example is **Maximum-Entropy Reinforcement Learning (MaxEnt RL)**, which augments the standard reinforcement learning objective
+:::{math}
+:enumerated: false
+J_{\mathrm{RL}}(\pi) = \mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^{T} r(s_t, a_t)\right]
+:::
+with an entropy regularization term,
+:::{math}
+:enumerated: false
+J_{\mathrm{MaxEnt}}(\pi) = \mathbb{E}_{\tau \sim \pi}\left[\sum_{t=0}^{T}\big(r(s_t, a_t) + \alpha\,\mathcal{H}(\pi(\cdot\mid s_t))\big)\right],
+:::
+where $\mathcal{H}(\pi(\cdot\mid s))$ denotes the policy entropy and $\alpha$ controls the reward-entropy trade-off.
 
-Policies trained under the maximum-entropy reinforcement learning framework tend to be more robust, as the agent learns to capture multiple modes of high-reward behavior rather than committing to a single deterministic trajectory.
-Consequently, if the environment or the state is perturbed at test time, the agent is more likely to recover by exploiting alternative high-reward strategies.
+Without the entropy term, the optimal solution is **a deterministic policy** that selects a single highest-value action in each state. In contrast, maximizing the entropy-regularized objective yields a **stochastic policy** that assigns probability mass to multiple high-value actions. In fact, the optimal MaxEnt policy takes the form
+:::{math}
+:enumerated: false
+\pi(a\mid s) = \frac{\exp(Q(s,a)/\alpha)}{Z},
+:::
+which is an energy-based distribution with an intractable normalization constant.
+
+The resulting stochasticity provides a significant robustness advantage. Rather than committing to a single trajectory, the agent learns a distribution over multiple high-reward behaviors. Consequently, if the environment changes at test time, the policy can exploit alternative strategies that were also assigned non-negligible probability during training.
 
 ::::{figure}
 :class: flex flex-row flex-wrap items-center justify-center
@@ -43,8 +50,14 @@ Environment at test time.
 https://bair.berkeley.edu/blog/2017/10/06/soft-q-learning/.
 ::::
 
-This is illustrated in the figure above, where the test time environment includes an additional obstacle that the agent hasn't seen during training.
-A standard RL agent that has learned a deterministic policy would not be able to reach the goal, whereas a MaxEnt RL agent would be able to find the lower passage towards the goal.
+The figure below illustrates this effect. A deterministic policy is likely to fail because it has committed to a single behavior. In contrast, a maximum-entropy policy can adapt by exploiting an alternative route that was already represented in its action distribution.
+
+This robustness comes at a cost: evaluating the MaxEnt objective requires estimating the entropy
+:::{math}
+:enumerated: false
+\mathcal{H}(\pi) = -\mathbb{E}_{a \sim \pi}[\log \pi(a)],
+:::
+yet $\pi$ is only available through an unnormalized density. Consequently, accurate and scalable entropy estimation for unnormalized distributions is a fundamental challenge in MaxEnt RL and many other machine learning applications.
 
 ## The Challenge
 
