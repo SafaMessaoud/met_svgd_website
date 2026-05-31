@@ -1,10 +1,8 @@
 (sec3)=
 # The SVGD-Induced Density
 
-As a particle-based variational inference method, SVGD [@svgd] evolves a set of $M$ particles $\{ x_i^0 \}_{i=0}^{M-1}$ sampled from an initial distribution $q^0$ to collectively match any arbitrarily complex target distribution $p$, as long as it is possible compute the score of $p$.
-However, SVGD does not provide an explicit expression for the density it induces: while we can generate samples, we do not know the value of the corresponding probability density at those sampled points.
-That is, if we evolve $\{ x_i^0 \}_{i=0}^{M-1}$ for $L$ steps according to the SVGD update rule, we would obtain $\{ x_i^L \}_{i=0}^{M-1} \sim q^L$ with $q^L \approx p$, but we wouldn't know the value of $q^L(x_i^L)$ for a given $x_i^L$.
-This is problematic when we are interested in downstream tasks such as likelihood-based evaluation, uncertainty quantification, or entropy estimation, as these require access to the density itself rather than just samples.
+In this section, we derive a closed-form expression for the density induced by Stein Variational Gradient Descent (SVGD) at every sampling step.
+SVGD can be viewed as iteratively transporting an initial distribution $q^0$ through a sequence of smooth maps. It follows from optimal transport theory (Villani, 2009) that, under mild regularity assumptions, successive transport maps can transform a simple initial distribution into one that approximates arbitrarily complex target distributions. Consequently, after $L$ SVGD updates, the particles $\{ x_i^L \}_{i=0}^{M-1}$ can be regarded as samples from a distribution $q^L$ that closely approximates the target $p$.
 
 (sec3-1)=
 ## Derivation of the SVGD-induced Density
@@ -100,6 +98,30 @@ animation = FuncAnimation(
 )
 animation.save("density_evolution.gif", fps=120)
 ```
+:::
+
+In the following, we prove that the SVGD-induced density after $L$ steps admits the closed-form expression
+:::{math}
+:label: svgd-density
+\begin{aligned}
+\log \hat q_\theta^L(x^L)
+&= \log q^0_{\theta_1}(x^0) \\
+&\quad - \epsilon_{\theta_3} \sum_{l=0}^{L-1} \sum_{j \neq i} \frac{\kappa(x_j^l, x_i^l)}{M\sigma^2} \left( d - \frac{\|x_i^l - x_j^l\|^2}{\sigma^2} - (x_i^l - x_j^l)^\top \nabla_{x_j^l} \log \bar p(x_j^l) \right) \\
+&\quad + \frac{\epsilon_{\theta_3}}{MV} \sum_{l=0}^{L-1} \sum_{v=0}^{V-1} v^\top \nabla_{x^l} \big( v^\top \nabla_{x^l} \log \bar p(x^l) \big) + \mathcal{O}(\epsilon_{\theta_3}^2),
+\end{aligned}
+:::
+under the assumption that the step-size satisfies
+:::{math}
+:enumerated: false
+\epsilon < \min_l \epsilon_{\mathrm{UB}}^l,
+\qquad
+\epsilon_{\mathrm{UB}}^l = \left( \sup_{x^l} \sqrt{ \mathrm{Tr}\big( \nabla_{x^l} \phi(x^l)\, \nabla_{x^l} \phi^\top(x^l) \big) } \right)^{-1}
+\quad \text{for all } l \in [0, L-1],
+:::
+and under the choice of the RBF kernel
+:::{math}
+:enumerated: false
+\kappa(x_i, x_j) = \exp\left( -\frac{\|x_i - x_j\|^2}{2\sigma^2} \right).
 :::
 
 Suppose that, after $l$ SVGD steps, the particle $x^l$ is distributed according to $q^l$.
