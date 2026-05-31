@@ -398,6 +398,7 @@ FuncAnimation(
 ## Stein Discrepancy as a Stopping Criterion
 
 In SVGD, the number of iterations $L$ is a hyperparameter that must be tuned for each target distribution $p$. MET-SVGD instead employs an adaptive number of steps $L_c$ by monitoring convergence at each iteration through the Stein discrepancy
+
 \begin{equation}
 \mathbb{S}(q^l,p)
 =
