@@ -260,8 +260,7 @@ animation.save(f"sensitivity_metsvgd.gif", fps=120)
 
 ## Faster Convergence via Learning the Initial Distribution
 
-To accelerate convergence, MET-SVGD also learns the initial distribution $q^0_{\theta_1}$.
-This is done via reverse KL minimization, similar to learning the kernel bandwidth and step-size.
+To accelerate convergence, MET-SVGD also learns the initial distribution $q^0_{\theta_1}$. By capturing the support of the target distribution, $q^0_{\theta_1}$ reduces the number of required sampling steps. The parameters $\theta_1$ are optimized jointly with $\theta_2$ and $\theta_3$ via reverse KL minimization.
 
 ::::{figure}
 :label: learn-distribution
