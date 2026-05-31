@@ -1,7 +1,7 @@
 (sec6)=
 # Library
 
-## Installation
+The library is available on GitHub: [SafaMessaoud/MET-SVGD-Variational-Inference-With-SVGD](https://github.com/SafaMessaoud/MET-SVGD-Variational-Inference-With-SVGD).
 
 ## Quickstart
 
