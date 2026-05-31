@@ -13,8 +13,8 @@ Besides an introduction to SVGD, variational inference, and related topics, we a
 
 ## Reference
 
-1. Messaoud, S., Mokeddem, B., Xue, Z., Pang, L., An, B., Chen, H., & Chawla, S. (2024). [S²AC: Energy-based reinforcement learning with Stein soft actor critic](https://openreview.net/forum?id=rAHcTCMaLc). *ICLR*.
-2. Messaoud, S., Charni, S., Bouazza, E., Pourghasemi Fatideh, A., & Bensmail, H. (2026). [Particles don't care about Z: Towards scaling entropy estimation of unnormalized densities](https://openreview.net/pdf?id=CaqVssw7rN). *ICML*.
+1. Messaoud, S., Mokeddem, B., Xue, Z., Pang, L., An, B., Chen, H., & Chawla, S. [S²AC: Energy-based reinforcement learning with Stein soft actor critic](https://openreview.net/forum?id=rAHcTCMaLc). *ICLR* 2024.
+2. Messaoud, S., Charni, S., Bouazza, E., Pourghasemi Fatideh, A., & Bensmail, H. [Particles don't care about Z: Towards scaling entropy estimation of unnormalized densities](https://openreview.net/pdf?id=CaqVssw7rN). *ICML* 2026.
 
 ## Code
 
