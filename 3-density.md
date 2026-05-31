@@ -104,7 +104,7 @@ In the following, we prove that the SVGD-induced density after $L$ steps admits 
 :::{math}
 :label: svgd-density
 \begin{aligned}
-\log \hat q^L(x^L)
+\log q^L(x^L)
 &= \log q^0(x^0) \\
 &\quad - \epsilon \sum_{l=0}^{L-1} \sum_{j \neq i} \frac{\kappa(x_j^l, x_i^l)}{M\sigma^2} \left( d - \frac{\|x_i^l - x_j^l\|^2}{\sigma^2} - (x_i^l - x_j^l)^\top \nabla_{x_j^l} \log \bar p(x_j^l) \right) \\
 &\quad + \frac{\epsilon}{MV} \sum_{l=0}^{L-1} \sum_{v=0}^{V-1} v^\top \nabla_{x^l} \big( v^\top \nabla_{x^l} \log \bar p(x^l) \big) + \mathcal{O}(\epsilon^2),
