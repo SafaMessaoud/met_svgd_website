@@ -128,7 +128,7 @@ animation.save(f"sensitivity_{sigma_choice}.gif", fps=120)
 ```
 :::
 
-To resolve this, we minimize the reverse KL divergence between the induced density $q^L$ and the target $p$ by jointly learning parameters $\theta = \{\theta_1, \theta_2\}$. Using the closed-form of $q^L$, we optimize both the kernel bandwidth $\sigma_{\theta_2}^l$ and step-size $\epsilon_{\theta_3}^l$ at each step $l$. The objective is:
+To resolve this, we minimize the reverse KL divergence between the induced density $q^L$ and the target $p$. Using the closed-form of $q^L$, we optimize both the kernel bandwidth $\sigma_{\theta_2}^l$ and step-size $\epsilon_{\theta_3}^l$ at each step $l$. The objective is:
 :::{math}
 :enumerated: false
 \theta^*
@@ -139,7 +139,7 @@ To resolve this, we minimize the reverse KL divergence between the induced densi
 -\mathbb{E}_{x^L \sim q^L_\theta}\left[ \log \bar p(x^L) \right]
 \right]
 :::
-subject to $\epsilon_{\theta_3}^l \leq \epsilon_\text{UB}^l$ for all $l$. Learning both $\epsilon_{\theta_3}^l$ and $\sigma_{\theta_2}^l$ ensures the trace term diminishes, stabilizing entropy estimation.
+subject to $\epsilon_{\theta_3}^l \leq \epsilon_\text{UB}^l$ for all $l$ with $\theta = \{\theta_1, \theta_2\}$. Learning both $\epsilon_{\theta_3}^l$ and $\sigma_{\theta_2}^l$ ensures the trace term stabilizes at 0 at convergence.
 
 :::{figure} figures/sensitivity_metsvgd.gif
 :class: flex flex-col items-center justify-center mt-0
