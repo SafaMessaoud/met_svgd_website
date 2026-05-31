@@ -3,9 +3,8 @@
 
 ## Energy-Based Models
 
-Energy-based models (EBMs) are generative models that learn a density $p_\phi$ parametrized by an energy function $f_\phi$, so that $p_\phi(x) = \bar p_\phi(x) / Z_\phi$, with $\bar p_\phi(x)=\exp(f_\phi(x))$.
-Typically, EBMs are trained via maximum likelihood estimation (MLE) by estimating the gradient of the maximum likelihood loss, since direct computation of the loss is not feasible due to the intractability of $Z_\phi$.
-However, when a sampler with a tractable density $q_\theta$ is given, a tight lower bound on the MLE loss can be computed:
+Energy-based models (EBMs) are generative models that learn a density $p_\phi$ parametrized by an energy function $f_\phi$, i.e., $p_\phi(x) = \bar p_\phi(x) / Z_\phi$, with $\bar p_\phi(x)=\exp(f_\phi(x))$.
+When a sampler with a tractable density $q_\theta$ is given, a tight lower bound on the MLE loss can be computed as:
 :::{math}
 :enumerated: false
 

@@ -395,32 +395,23 @@ FuncAnimation(
 ```
 :::
 
-## Stein-Identity as a Stopping Criterion
+## Stein Discrepancy as a Stopping Criterion
 
-In SVGD, the number of steps $L$ for which the algorithm is run is specified is a hyperparameter that must be tuned for each target distribution $p$.
-This is also typically the case for some MCMC algorithms such as Langevin Dynamics.
-MET-SVGD on the other hand employs an adaptive number of steps $L_c$ by checking at each step $l$ whether convergence has been achieved by measuring the violation of Stein's Identity:
-:::{math}
-:enumerated: false
+In SVGD, the number of iterations $L$ is a hyperparameter that must be tuned for each target distribution $p$. MET-SVGD instead employs an adaptive number of steps $L_c$ by monitoring convergence at each iteration through the Stein discrepancy.
 
-SI(q^l_\theta, p)
+\begin{equation}
+\mathbb{S}(q^l,p)
 =
-\sqrt{
-\mathbb{E}_{x^l \sim q^l_\theta}
+\mathbb{E}_{x^l\sim q^l}
 \left[
-\phi_\theta(x^{l})^\top
-\nabla_{x^l} \log p(x^l)
+\phi(x^l)^\top \nabla_{x^l}\log p(x^l)
 +
-\mathrm{Tr}\left(
-\nabla_{x^l} \phi_\theta(x^l)
-\right)
-\right]
-},
-:::
+\mathrm{Tr}\!\left(\nabla_{x^l}\phi(x^l)\right)
+\right]^2,
+\end{equation}
+which measures the violation of Stein's identity under the current particle distribution $q^l$. By Stein's identity, $\mathbb{S}(q^l,p)=0$ when $q^l=p$, making it a natural convergence diagnostic. Moreover, computing $\mathbb{S}(q^l,p)$ incurs negligible additional cost since both $\nabla_{x^l}\log p(x^l)$ and $\mathrm{Tr}(\nabla_{x^l}\phi(x^l))$ are already evaluated during the SVGD update.
 
-which only incurs a vector dot product to compute, as $\nabla_{x^l} \log p(x^l)$ and $\mathrm{Tr}\left( \nabla_{x^l}\phi_\theta(x^l) \right)$ have already been computed.
-
-Based on this, MET-SVGD can be viewed as a normalizing flow model with a full-rank Jacobian and an adaptive number of layers, retaining computational efficiency without sacrificing expressivity.
+Sampling is terminated once $\mathbb{S}(q^l,p)$ falls below a predefined threshold, yielding an adaptive number of transport steps $L_c$ that depends on the complexity of the target distribution.
 
 ## Divergence Control via Metropolis-Hastings
 
@@ -590,7 +581,7 @@ animation.save("particle_evolution_non_smooth_mh.gif", fps=120)
 ```
 :::
 
-To inherit the convergence guarantees of Metropolis–Hastings (MH), MET-SVGD augments the SVGD state with a simple auxiliary random variable $r$ that can take one of two values, $−1$ or $1$.
+For reversibility of the sampling chain, MET-SVGD augments the SVGD state with a simple auxiliary random variable $r$ that can take one of two values, $−1$ or $1$.
 At each step $l$, $r^{l+1}$ is sampled at random and determines how the proposal is constructed.
 If the value is $1$, the SVGD transformation is applied in the usual forward direction; if it is $−1$, the inverse SVGD transformation is applied.
 This construction allows MET-SVGD to inherit MH convergence guarantees while still leveraging the efficiency of SVGD.
