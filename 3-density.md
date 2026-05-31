@@ -4,9 +4,6 @@
 In this section, we derive a closed-form expression for the density induced by Stein Variational Gradient Descent (SVGD) at every sampling step.
 SVGD can be viewed as iteratively transporting an initial distribution $q^0$ through a sequence of smooth maps. It follows from optimal transport theory (Villani, 2009) that, under mild regularity assumptions, successive transport maps can transform a simple initial distribution into one that approximates arbitrarily complex target distributions. Consequently, after $L$ SVGD updates, the particles $\{ x_i^L \}_{i=0}^{M-1}$ can be regarded as samples from a distribution $q^L$ that closely approximates the target $p$.
 
-(sec3-1)=
-## Derivation of the SVGD-induced Density
-
 :::{figure} figures/density_evolution.gif
 :label: density-evolution
 :class: flex flex-col items-center justify-center
@@ -100,6 +97,9 @@ animation.save("density_evolution.gif", fps=120)
 ```
 :::
 
+(sec3-1)=
+## Derivation of the SVGD-induced Density
+
 In the following, we prove that the SVGD-induced density after $L$ steps admits the closed-form expression
 :::{math}
 :label: svgd-density
@@ -123,6 +123,9 @@ and under the choice of the RBF kernel
 :enumerated: false
 \kappa(x_i, x_j) = \exp\left( -\frac{\|x_i - x_j\|^2}{2\sigma^2} \right).
 :::
+
+(sec3-proof)=
+### Proof
 
 Suppose that, after $l$ SVGD steps, the particle $x^l$ is distributed according to $q^l$.
 Then, using the change of variable formula for densities (CVF), the distribution of $x^{l+1} = x^l + \epsilon \phi(x^l)$, where $\phi$ is the [SVGD velocity field](#the-svgd-update-rule), is:
