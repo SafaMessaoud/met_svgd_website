@@ -397,7 +397,7 @@ FuncAnimation(
 
 ## Stein Discrepancy as a Stopping Criterion
 
-In SVGD, the number of iterations $L$ is a hyperparameter that must be tuned for each target distribution $p$. MET-SVGD instead employs an adaptive number of steps $L_c$ by monitoring convergence at each iteration through the Stein discrepancy
+In SVGD, the number of iterations $L$ is a hyperparameter that must be tuned for each target distribution $p$. MET-SVGD instead employs an adaptive number of steps $L_c$ by monitoring convergence at each iteration through the Stein discrepancy.
 
 \begin{equation}
 \mathbb{S}(q^l,p)
@@ -581,7 +581,7 @@ animation.save("particle_evolution_non_smooth_mh.gif", fps=120)
 ```
 :::
 
-To inherit the convergence guarantees of Metropolis–Hastings (MH), MET-SVGD augments the SVGD state with a simple auxiliary random variable $r$ that can take one of two values, $−1$ or $1$.
+For reversibility of the sampling chain, MET-SVGD augments the SVGD state with a simple auxiliary random variable $r$ that can take one of two values, $−1$ or $1$.
 At each step $l$, $r^{l+1}$ is sampled at random and determines how the proposal is constructed.
 If the value is $1$, the SVGD transformation is applied in the usual forward direction; if it is $−1$, the inverse SVGD transformation is applied.
 This construction allows MET-SVGD to inherit MH convergence guarantees while still leveraging the efficiency of SVGD.
