@@ -9,7 +9,7 @@ Overview of the MET-SVGD framework.
 
 ## End-to-End SVGD Parameter Learning via Reverse KL Minimization
 
-Although we consistently observe the particle converging to the high density regions of the target distributions for different values of the kernel bandwidth $\sigma$, using the derived closed-form expression of the SVGD-induced density to estimate the entropy of the target is very sensitive to the choice of $\sigma$, in the sense that the estimate only converges to the true entropy $\mathcal{H}(p)$ for specific $\sigma$ values.
+While SVGD particles reliably concentrate in high-density regions of the target distribution for different choices of the kernel bandwidth $\sigma$, entropy estimation via the closed-form SVGD-induced density is considerably more sensitive to this parameter. Specifically, the resulting estimate converges to the true entropy $\mathcal{H}(p)$ only for a subset of bandwidth values.
 
 ::::{figure}
 :class: flex flex-col items-center justify-center mt-0
