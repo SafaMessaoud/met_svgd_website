@@ -247,69 +247,69 @@ $\sum_{j \neq i} \kappa(x_i^l, x_j^l) \approx 1$.
 
 ## Derivation of the SVGD Update Rule
 
-Suppose we want to sample from a target distribution $p$.
-Given $x \sim q^0$, the idea behind SVGD is to find a velocity field $\phi$ that maximally decreases the KL divergence between the distribution $q$ of $f(x) = x + \epsilon \phi(x)$ and $p$.
-
-Formally, we want to solve the following optimization problem:
+Suppose we wish to approximate a target distribution $p$ using particles $x \sim q^0$. The central idea of SVGD is to iteratively transport these particles using a smooth transformation
 :::{math}
 :enumerated: false
-
-\phi^*
-=
-\underset{\phi \in \mathcal{F}}{\mathrm{argmax}}
-\,\,
-- \nabla_{\epsilon} D_{KL} \left(q \,||\, p \right) |_{\epsilon=0},
+f(x) = x + \epsilon\, \phi(x),
 :::
-where $\mathcal{F}$ is a suitable family of functions.
+where $\phi$ is a velocity field chosen to maximally decrease the KL divergence to the target distribution.
 
-Let $y \sim p$. One can show that $D_{KL}(q \,||\, p) = D_{KL}(q^0 \,||\, \tilde p)$, where $\tilde p$ is the distribution of $f^{-1}(y)$, assuming that $f$ is invertible.
-This allows us to get a closed form expression of the gradient of $D_{KL}$ with respect to $\epsilon$, as $q^0$ is independent of $\epsilon$:
+Formally, SVGD seeks the direction
 :::{math}
 :enumerated: false
+\underset{\phi \in \mathcal{F}}{\mathrm{argmax}}\,\left( -\left.\nabla_{\epsilon} D_{\mathrm{KL}}(q^{\epsilon} \,\|\, p)\right|_{\epsilon=0} \right),
+:::
+where $q^{\epsilon}$ denotes the distribution obtained by pushing $q^0$ through $f$, and $\mathcal{F}$ is a suitable function space.
 
--\nabla_{\epsilon} D_{\mathrm{KL}}(q \,\|\, p) |_{\epsilon=0}
+Assuming $f$ is invertible, one can derive the first-order variation of the KL divergence as
+:::{math}
+:enumerated: false
+-\left.\nabla_{\epsilon} D_{\mathrm{KL}}(q^{\epsilon} \,\|\, p)\right|_{\epsilon=0}
 =
 \mathbb{E}_{x\sim q^0}
 \left[
 \nabla_{x} \log p(x)^{\top}\,\phi(x)
 +
-\mathrm{Tr}(\nabla_x \phi(x))
+\operatorname{Tr}\big( \nabla_x \phi(x) \big)
 \right].
 :::
+The first term attracts particles toward regions of high probability density, while the second encourages volume expansion and prevents particle collapse.
 
-In case $\mathcal{F}$ is a subset of $\mathcal{H}^D$, where $\mathcal{H}^D$ is a Reproducing Kernel Hilbert Space (RKHS) with a corresponding kernel $\kappa(x, y)$, then, using the reproducing property of the RKHS, $\phi(x)$ can be written as $\langle \phi(\cdot), \kappa(x, \cdot) \rangle_{\mathcal{H}^D}$.
-Given this, we can rewrite the gradient of the KL divergence as an inner product:
+To obtain a tractable optimization problem, SVGD restricts $\phi$ to a reproducing kernel Hilbert space (RKHS) $\mathcal{H}^D$ with kernel $\kappa(x, y)$. Using the reproducing property of the RKHS, the KL gradient can be expressed as
 :::{math}
 :enumerated: false
-
--\nabla_{\epsilon} D_{\mathrm{KL}}(q \,\|\, p) |_{\epsilon=0}
-=
 \left\langle
-\phi(\cdot)
-,
+\phi(\cdot),\;
 \mathbb{E}_{x\sim q^0}
-\left[
-\kappa(x, \cdot)
-\nabla_{x} \log p(x)
+\big[
+\kappa(x, \cdot)\nabla_{x} \log p(x)
 +
 \nabla_{x} \kappa(x, \cdot)
-\right]
+\big]
 \right\rangle_{\mathcal{H}^D}.
 :::
 
-If we constrain the norm of $\phi$ in $\mathcal{H}^D$, so that $\mathcal{F} = \{ \phi : \phi \in \mathcal{H}^D \text{ s.t. } ||\phi||_{\mathcal{H}^D} \leq 1 \}$, the maximum of the inner product is achieved when $\phi$ is proportional to the second argument, hence the maximizer is:
+If we constrain $\|\phi\|_{\mathcal{H}^D} \leq 1$, the inner product is maximized when $\phi$ is proportional to the second argument. The optimal velocity field is therefore
 :::{math}
 :enumerated: false
-
-\phi_{p,q^0} (\cdot)
+\phi_{p,q^0}(\cdot)
 \propto
 \mathbb{E}_{x\sim q^0}
-\left[
-\kappa(x, \cdot)
-\nabla_{x} \log p(x)
+\Big[
+\kappa(x, \cdot)\nabla_{x} \log p(x)
 +
 \nabla_{x} \kappa(x, \cdot)
-\right].
+\Big].
 :::
 
-For a distribution known up to a normalization constant $p(x) = \bar p(x) / Z$, $\nabla_x \log p(x) = \nabla_x \log \bar p(x)$. Note, this does not depend on the normalization constant of the target density.
+For targets known only up to a normalization constant,
+:::{math}
+:enumerated: false
+p(x) = \frac{\bar p(x)}{Z},
+:::
+the score function satisfies
+:::{math}
+:enumerated: false
+\nabla_x \log p(x) = \nabla_x \log \bar p(x),
+:::
+since the normalization constant vanishes under differentiation. Consequently, SVGD requires only the score of the unnormalized density and never needs to evaluate $Z$.
