@@ -99,7 +99,7 @@ animation.save("particle_evolution.gif", fps=120)
 :::
 
 <!-- Importantly, the SVGD velocity field $\phi$ is carefully designed to point in the direction that minimizes the KL divergence between the updated distribution and the target distribution. In other words, each SVGD transformation moves the particles in the most "efficient" way to make them resemble the target distribution more closely. -->
-A key property of SVGD is that the velocity field $\phi$ is chosen to maximally decrease the KL divergence between the particle distribution and the target.
+A key property of SVGD is that the velocity field $\phi$ is chosen to maximally decrease the KL divergence between the particles distribution and the target.
 Intuitively, each update moves the particles in the direction that most closely makes their empirical distribution resemble the target distribution.
 
 (the-rbf-kernel)=
@@ -244,7 +244,6 @@ where $M$ is the number of particles.
 This choice roughly ensures that
 $\sum_{j \neq i} \kappa(x_i^l, x_j^l) \approx 1$.
 
-However, it is not obvious that this property is always desirable, and in practice the median trick can be somewhat brittle depending on the geometry of the target distribution.
 
 ## Derivation of the SVGD Update Rule
 
