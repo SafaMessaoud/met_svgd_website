@@ -128,43 +128,18 @@ animation.save(f"sensitivity_{sigma_choice}.gif", fps=120)
 ```
 :::
 
-The target's entropy estimate based on $q^L$ is:
-:::{math}
-:enumerated: false
-
-\begin{align*}
-\mathcal{H}(p)
-&\approx
--\mathbb{E}_{x^L \sim q^L} \left[ \log q^L(x^L) \right] \\
-&\approx
--\mathbb{E}_{x^{L-1} \sim q^{L-1}} \left[ \log q^{L-1}(x^{L-1}) \right]
-+\epsilon\mathbb{E}_{x^{L-1} \sim q^{L-1}} \left[ \mathrm{Tr}\left( \nabla_{x^{L-1}} \phi(x^{L-1}) \right) \right]
-.
-\end{align*}
-:::
-
-As $L\to\infty$, we expect $q^L=q^{L-1}$ and the trace term above to converge zero in expectation.
-However, this is not trivial from the perspective of $\sigma$ selection.
-It can be shown via a taylor expansion that this trace term corresponds to an $8$-th degree polynomial in $\sigma$, with coefficients that do not guarantee the existence of real roots.
-
-To resolve this, MET-SVGD transforms the hyperparameter selection problem into a parameter learning one by leveraging the computed $\{ \log q^L(x_i^L) \}_{i=0}^{M-1}$ to minimize the KL divergence between $q^L$ and $p$, thus obtaining both the optimal kernel bandwidth $\sigma_{\theta_2^*}^l$ and step-size $\epsilon_{\theta_3^*}^l$ for every step $l$:
+To resolve this, we minimize the reverse KL divergence between the induced density $q^L$ and the target $p$ by jointly learning parameters $\theta = \{\theta_1, \theta_2\}$. Using the closed-form of $q^L$, we optimize both the kernel bandwidth $\sigma_{\theta_2}^l$ and step-size $\epsilon_{\theta_3}^l$ at each step $l$. The objective is:
 :::{math}
 :enumerated: false
 \theta^*
 =
-\underset{\theta}{\mathrm{argmin}}
+\underset{\theta}{\mathrm{arg\,min}}
+\left[
 -\mathcal{H}(q^L_\theta)
 -\mathbb{E}_{x^L \sim q^L_\theta}\left[ \log \bar p(x^L) \right]
-\quad
-\text{s.t.}
-\quad
-\epsilon_{\theta_3}^l \leq \epsilon_\text{UB}^l
-\quad
-\forall l \in [0 \dots L-1],
+\right]
 :::
-where $\epsilon_\text{UB}^l$ is the step-size upper bound derived in [Section 3.2](#sec3-eps).
-
-Learning the step-size alongside the kernel bandwidth is necessary, since, from the argument above, the kernel bandwidth alone might not be enough for the trace term to converge to zero.
+subject to $\epsilon_{\theta_3}^l \leq \epsilon_\text{UB}^l$ for all $l$. Learning both $\epsilon_{\theta_3}^l$ and $\sigma_{\theta_2}^l$ ensures the trace term diminishes, stabilizing entropy estimation.
 
 :::{figure} figures/sensitivity_metsvgd.gif
 :class: flex flex-col items-center justify-center mt-0
